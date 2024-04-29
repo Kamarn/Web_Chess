@@ -9,37 +9,27 @@
 <script>let socket = io();</script>
 
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-        <div class="container">
+    <div class="container">
 
-            <div class="collapse navbar-collapse" id="navbarButtonsExample">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link" href="/">Dashboard</a>
-                    </li>
-                </ul>
+        <a class="navbar-brand" href="/">Dashboard</a>
 
-                <div class="d-flex align-items-center">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarButtonsExample" aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    {{#if user }}
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            </ul>
 
-                        <button onclick="location.href='/profile'" type="button" class="btn btn-primary me-3">
-                            Profile
-                        </button>
-                    
-                        <button onclick="location.href='/auth/logout'" type="button" class="btn btn-primary me-3">
-                            Exit
-                        </button>
-                        
-                    {{else}}
-                        <button onclick="location.href='/register'" type="button" class="btn btn-primary me-3">
-                            Sign in
-                        </button>
-
-                        <button onclick="location.href='/login'" type="button" class="btn btn-link px-3 me-2">
-                            Log in
-                        </button>
-                    {{/if}}
-                </div>
+            <div class="d-flex align-items-center">
+                {{#if user }}
+                    <button onclick="location.href='/profile'" type="button" class="btn btn-primary me-3 d-lg-block">Profile</button>
+                    <button onclick="location.href='/auth/logout'" type="button" class="btn btn-primary me-3 d-lg-block">Exit</button>
+                {{else}}
+                    <button onclick="location.href='/register'" type="button" class="btn btn-primary me-3 d-lg-block">Sign in</button>
+                    <button onclick="location.href='/login'" type="button" class="btn btn-link px-3 me-2 d-lg-block">Log in</button>
+                {{/if}}
             </div>
         </div>
-    </nav>
+    </div>
+</nav>

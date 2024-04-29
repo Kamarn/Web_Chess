@@ -10,12 +10,16 @@
 
     <style>
         .center_index {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-lg { 
+            margin-top: 10px;
         }
     </style>
 
@@ -27,24 +31,12 @@
     {{#if user }}
 
         <div class="center_index">
-            <input type="text" id="codeInput">
-            <button id="createGame">Create game</button>
-            <button id="joinGame">Join game</button>
-            <div style="color: red" id="errorMessage"></div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="codeInput" aria-describedby="codeInput" placeholder="Code for match">
+            </div>
 
-            <script>
-                $('#createGame').on('click', function() {
-                    window.location.replace('/white?code=' + $('#codeInput').val());
-                });
-                $('#joinGame').on('click', function() {
-                    window.location.replace('/black?code=' + $('#codeInput').val());
-                });
-
-                var urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('error') == 'invalidCode') {
-                    $('#errorMessage').text('Invalid invite code');
-                }
-            </script>
+            <button onclick="location.href='/game/create?code=' + $('#codeInput').val()" class="btn btn-primary btn-lg active">Create</button>
+            <button onclick="location.href='/game/join?code=' + $('#codeInput').val()" class="btn btn-primary btn-lg active">Join</button>
 
             {{#if message}}
                 <h4 class="alert alert-danger mt-4">{{message}}</h4>

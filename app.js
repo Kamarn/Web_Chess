@@ -31,3 +31,4 @@ server.listen(5000, () => {
 
 app.use('/', require('./routes/pages'));
 app.use('/auth', require('./routes/auth'));
+app.use('/game', require('./routes/game'));
