@@ -44,10 +44,8 @@ exports.register = (req, res) => {
         }
         
         let hashedPassword = await bcrypt.hash(pass, 8);
-
-        console.log(hashedPassword);
         
-        database.query('INSERT INTO users SET ?', {username: username, email: email, password: hashedPassword, usertype: 'customer'}, (error, result) => {
+        database.query('INSERT INTO users SET ?', {username: username, email: email, password: hashedPassword}, (error, result) => {
             if(error){
                 console.log(error);
             }
@@ -88,25 +86,16 @@ exports.login = (req, res) => {
 
             const cookieOptions = {
                 expires: new Date(
-                    Date.now() + 1800000
+                    Date.now() + 18000000
                 ),
                 httpOnly: true
             }
 
             const role = json[0].usertype;
 
-            if(role == 'customer'){
-                res.cookie('jwt', token, cookieOptions);
-                res.status(200).redirect('/customerProfile');
-            }
-            else if(role == 'worker'){
-                res.cookie('jwt', token, cookieOptions);
-                res.status(200).redirect('/workerProfile');
-            }
-            else if(role == 'manager'){
-                res.cookie('jwt', token, cookieOptions);
-                res.status(200).redirect('/managerProfile');
-            }
+            res.cookie('jwt', token, cookieOptions);
+            res.status(200).redirect('/profile');
+            
 
         }
         else{
@@ -130,7 +119,6 @@ exports.isLoggedIn = async (req, res, next) => {
                 }
 
                 req.user = result[0];
-                req.usertype = result[0].usertype;
                 req.username = result[0].username;
                 return next();
     

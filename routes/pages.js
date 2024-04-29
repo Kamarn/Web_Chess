@@ -1,15 +1,12 @@
 const express = require('express');
 const authController = require('../controllers/auth');
-const productController = require('../controllers/product');
+const gameController = require('../controllers/game');
 const router = express.Router();
 
-/* router.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname+'/views/ind.html'))
-}); */
-  
-router.get('/', authController.isLoggedIn, productController.display);
-router.get('/productinfo/:productName', authController.isLoggedIn, productController.productinfo);
 
+router.get('/', authController.isLoggedIn, (req, res) => {
+    res.render("index", { user: req.user });
+});
 
 router.get("/login", (req, res) => {
     res.render("login");
@@ -19,65 +16,22 @@ router.get("/register", (req, res) => {
     res.render("register");
 });
 
-router.get("/meet", authController.isLoggedIn, (req, res) => {
-    if( (req.user) && (req.usertype == 'manager' || req.usertype == 'worker') ) {
-        res.render('meet', {
-        user: req.user
-        });
-    } else {
-        res.redirect('/login');
-    }
+router.get('/profile', authController.isLoggedIn, (req, res) => {
+    res.render("profile", { user: req.user });
 });
 
-router.get("/customerProfile", authController.isLoggedIn, (req, res) => {
-    if( (req.user) && req.usertype == 'customer' ) {
-        res.render('customerProfile', {
-        user: req.user
-        });
-    } else {
-        res.redirect('/login');
-    }
+router.get('/white', authController.isLoggedIn, (req, res) => {
+    res.render('game', { color: 'white', user: req.user});
 });
 
-router.get("/workerProfile", authController.isLoggedIn, (req, res) => {
-    if( (req.user) && req.usertype == 'worker' ) {
-        res.render('workerProfile', {
-        user: req.user
+router.get('/black', authController.isLoggedIn, (req, res) => {
+    if (!games[req.query.code]) {
+        return res.render('index', {
+            message: 'Wrong invite code'
         });
-    } else {
-        res.redirect('/login');
     }
-});
 
-router.get("/managerProfile", authController.isLoggedIn, (req, res) => {
-    if( (req.user) && req.usertype == 'manager' ) {
-        res.render('managerProfile', {
-        user: req.user
-        });
-    } else {
-        res.redirect('/login');
-    }
+    res.render('game', { color: 'black', user: req.user});
 });
-
-router.get("/Hesap", authController.isLoggedIn, (req, res) => {
-    if( req.usertype == "manager" ) {
-        res.render('managerProfile', {
-        user: req.user
-        });
-    } else if( req.usertype == "worker" ){
-        res.render('workerProfile', {
-            user: req.user
-        });
-    }
-    else if( req.usertype == "customer" ){
-        res.render('customerProfile', {
-            user: req.user
-        });
-    }
-    else{
-        res.redirect('/login');
-    }
-});
-
 
 module.exports = router;
