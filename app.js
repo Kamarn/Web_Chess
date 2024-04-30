@@ -3,6 +3,16 @@ const path = require('path');
 const cookieparser = require('cookie-parser');
 const hbs = require('hbs');
 
+hbs.registerHelper('ifnoteq', function (a, b, options) {
+    if (a != b) { return options.fn(this); }
+    return options.inverse(this);
+});
+
+hbs.registerHelper('ifeq', function (a, b, options) {
+    if (a == b) { return options.fn(this); }
+    return options.inverse(this);
+});
+
 const app = express();
 hbs.registerPartials(__dirname + '/partials');
 

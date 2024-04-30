@@ -6,8 +6,10 @@ create table Users(
 	userID int PRIMARY KEY NOT NULL auto_increment,
 	username varchar(100),
     email varchar(100),
-    password varchar(100)
+    password varchar(100),
+    lastFen varchar(255),
+    lastColor varchar(255)
 );
 
-insert into Users values(1, 'USER1', 'user1@game.com', '$2a$08$a9aMiP/8EIUHI3tZWBCNk.o4fslWPYHpuUTnQot2xOUZCa5kvUz0K');
-insert into Users values(2, 'USER2', 'user2@game.com', '$2a$08$6wjnbOJC.DaoKUMxjM3jwue4ZWArvp7WrYjJHoqiFpH191p91BnyO');
+insert into Users values(1, 'USER1', 'user1@game.com', '$2a$08$a9aMiP/8EIUHI3tZWBCNk.o4fslWPYHpuUTnQot2xOUZCa5kvUz0K', '', '');
+insert into Users values(2, 'USER2', 'user2@game.com', '$2a$08$6wjnbOJC.DaoKUMxjM3jwue4ZWArvp7WrYjJHoqiFpH191p91BnyO', '', '');

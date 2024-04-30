@@ -78,7 +78,7 @@ exports.login = (req, res) => {
         var json =  JSON.parse( JSON.stringify(result) );
 
         if(result.length > 0 && bcrypt.compareSync(password, json[0].password)){
-            const id = json[0].username;
+            const id = json[0].userID;
 
             const token = jwt.sign({id: id}, jwt_pass, {
                 expiresIn: '1d'
@@ -113,13 +113,13 @@ exports.isLoggedIn = async (req, res, next) => {
         try{
             const decoded = await promisify(jwt.verify)(req.cookies.jwt, jwt_pass);
   
-            database.query('SELECT * FROM users WHERE username = ?', [decoded.id], (error, result) => {
+            database.query('SELECT * FROM users WHERE userID = ?', [decoded.id], (error, result) => {
                 if(!result) {
                 return next();
                 }
 
                 req.user = result[0];
-                req.username = result[0].username;
+                req.userID = result[0].userID;
                 return next();
     
             });
