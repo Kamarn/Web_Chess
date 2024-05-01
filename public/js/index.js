@@ -140,11 +140,22 @@ function onMouseoutSquare (square, piece) {
 
 function onChange (oldPos, newPos) {
     positionFen = Chessboard.objToFen(newPos);
-    sendStatusPause();
+    
+
+    if (game.in_checkmate()) {
+        sendStatusCheckmate();
+    }
+    else if (game.in_draw()) {
+        sendStatusCheckmate();
+    }
+    else{
+        sendStatusPause();
+    }
+    
 }
 
 function sendStatusPause () {
-    console.log(positionFen);
+    
     fetch('/game/saveFen', {
         method: 'POST',
         headers: {

@@ -45,7 +45,7 @@ exports.register = (req, res) => {
         
         let hashedPassword = await bcrypt.hash(pass, 8);
         
-        database.query('INSERT INTO users SET ?', {username: username, email: email, password: hashedPassword}, (error, result) => {
+        database.query('INSERT INTO users SET ?', {username: username, email: email, password: hashedPassword, lastFen: 'start', lastColor: ''}, (error, result) => {
             if(error){
                 console.log(error);
             }

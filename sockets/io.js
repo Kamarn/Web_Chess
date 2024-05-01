@@ -11,7 +11,7 @@ module.exports = io => {
         });
         
         socket.on('joinGame', function(data) {
-
+            console.log('Joined to game');
             currentCode = data.code;
             socket.join(currentCode);
             if (!games[currentCode]) {

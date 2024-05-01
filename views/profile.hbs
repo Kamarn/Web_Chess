@@ -38,7 +38,7 @@
                     {{/ifeq}}
 
                     {{#ifnoteq user.lastFen 'start'}}
-                        <button onclick="location.href='/game/rejoin'" class="btn btn-primary">Re-join last game</button>
+                        <button onclick="location.href='/game/rejoin?code=' + {{user.gameCode}}" class="btn btn-primary">Re-join last game</button>
                     {{/ifnoteq}}
                 </div>
             </div>

@@ -1,8 +1,5 @@
 const mysql = require('mysql');
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const { promisify } = require('util');
-const jwt_pass = 'cookiepass';
 
 var database = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -29,7 +26,7 @@ exports.create = (req, res) => {
         return res.render('index', { message: 'This code is currently in use', user: req.user });
     }
 
-    database.query('UPDATE users SET lastFen = ?, lastColor = ? WHERE email = ?', ['start', 'white', email], async (error, result) => {
+    database.query('UPDATE users SET lastFen = ?, lastColor = ?, gameCode = ? WHERE email = ?', ['start', 'white', codeInput, email], async (error, result) => {
         if(error){
             console.log(error);
         }
@@ -49,7 +46,7 @@ exports.join = (req, res) => {
         return res.render('index', { message: 'Wrong invite code', user: req.user });
     }
 
-    database.query('UPDATE users SET lastFen = ?, lastColor = ? WHERE email = ?', ['start', 'black', email], async (error, result) => {
+    database.query('UPDATE users SET lastFen = ?, lastColor = ?, gameCode = ? WHERE email = ?', ['start', 'black', codeInput, email], async (error, result) => {
         if(error){
             console.log(error);
         }
@@ -73,9 +70,6 @@ exports.saveFen = (req, res) => {
     
     fen = req.body.fen;
     email = req.user.email;
-
-    console.log(email);
-    console.log(fen);
     
     database.query('UPDATE users SET lastFen = ? WHERE email = ?', [fen, email], async (error, result) => {
         if(error){
