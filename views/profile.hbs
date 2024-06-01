@@ -32,14 +32,6 @@
                 <img class="card-img-top" src="public/img/customer_img.png" alt="Card image" style="width:100%">
                 <div class="card-body">
                     <h4 class="card-title">Hello {{user.username}}</h4>
-
-                    {{#ifeq user.lastFen 'start'}}
-                        <h3>No un-finished games found</h3>
-                    {{/ifeq}}
-
-                    {{#ifnoteq user.lastFen 'start'}}
-                        <button onclick="location.href='/game/rejoin?code=' + {{user.gameCode}}" class="btn btn-primary">Re-join last game</button>
-                    {{/ifnoteq}}
                 </div>
             </div>
         </div>

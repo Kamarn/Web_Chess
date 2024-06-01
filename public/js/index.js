@@ -62,11 +62,7 @@ function onDrop (source, target) {
     updateStatus()
 }
 
-socket.on('newMove', function(move) {
-    game.move(move);
-    board.position(game.fen());
-    updateStatus();
-});
+
 
 // update the board position after the piece snap
 // for castling, en passant, pawn promotion
@@ -84,7 +80,6 @@ function updateStatus () {
     // checkmate?
     if (game.in_checkmate()) {
         status = 'Game over, ' + moveColor + ' is in checkmate.'
-        sendStatusCheckmate();
     }
 
     // draw?
@@ -97,11 +92,13 @@ function updateStatus () {
     }
 
     else if (!gameHasStarted) {
-        status = 'Waiting for black to join'
+        status = 'Waiting for opponent to join'
     }
 
     // game still on
     else {
+
+        
         status = moveColor + ' to move'
 
         // check?
@@ -138,73 +135,10 @@ function onMouseoutSquare (square, piece) {
     removeGreySquares()
 }
 
-function onChange (oldPos, newPos) {
-    positionFen = Chessboard.objToFen(newPos);
-    
-
-    if (game.in_checkmate()) {
-        sendStatusCheckmate();
-    }
-    else if (game.in_draw()) {
-        sendStatusCheckmate();
-    }
-    else{
-        sendStatusPause();
-    }
-    
-}
-
-function sendStatusPause () {
-    
-    fetch('/game/saveFen', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ fen: positionFen })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Response from server:', data);
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
-    
-}
-
-function sendStatusCheckmate () {
-    fetch('/game/saveFen', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ fen: 'start' })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Response from server:', data);
-    })
-    .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
-}
-
 var config = {
     draggable: true,
-    position: playerPosition,
+    position: 'start',
     moveSpeed: 'slow',
-    onChange: onChange,
     onDragStart: onDragStart,
     onDrop: onDrop,
     onSnapEnd: onSnapEnd,
@@ -229,6 +163,12 @@ if (urlParams.get('code')) {
 socket.on('startGame', function() {
     gameHasStarted = true;
     updateStatus()
+});
+
+socket.on('newMove', function(move) {
+    game.move(move);
+    board.position(game.fen());
+    updateStatus();
 });
 
 socket.on('gameOverDisconnect', function() {

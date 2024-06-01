@@ -23,6 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
     "mysql": "^2.18.1",
+    "mysql2": "^3.10.0",
     "nodemon": "^2.0.15",
     "selenium-webdriver": "^4.1.1",
     "socket.io": "^4.7.5",

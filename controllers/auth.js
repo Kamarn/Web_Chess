@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const async = require('hbs/lib/async');
 const jwt = require('jsonwebtoken');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const { promisify } = require('util');
 require('dotenv').config();
 
@@ -27,7 +27,7 @@ exports.register = (req, res) => {
 
     const{username, email, pass, passrepeat} = req.body;
 
-    database.query('SELECT email FROM users WHERE email = ?', [email], async (error, result) => {
+    database.query('SELECT email FROM Users WHERE email = ?', [email], async (error, result) => {
         if(error){
             console.log(error);
         }
@@ -45,7 +45,7 @@ exports.register = (req, res) => {
         
         let hashedPassword = await bcrypt.hash(pass, 8);
         
-        database.query('INSERT INTO users SET ?', {username: username, email: email, password: hashedPassword, lastFen: 'start', lastColor: ''}, (error, result) => {
+        database.query('INSERT INTO Users SET ?', {username: username, email: email, password: hashedPassword}, (error, result) => {
             if(error){
                 console.log(error);
             }
@@ -70,7 +70,7 @@ exports.login = (req, res) => {
         });
     }
 
-    database.query('SELECT * FROM users WHERE email = ?', [email], async (error, result) => {
+    database.query('SELECT * FROM Users WHERE email = ?', [email], async (error, result) => {
         if(error){
             console.log(error);
         }
@@ -113,7 +113,7 @@ exports.isLoggedIn = async (req, res, next) => {
         try{
             const decoded = await promisify(jwt.verify)(req.cookies.jwt, jwt_pass);
   
-            database.query('SELECT * FROM users WHERE userID = ?', [decoded.id], (error, result) => {
+            database.query('SELECT * FROM Users WHERE userID = ?', [decoded.id], (error, result) => {
                 if(!result) {
                 return next();
                 }
